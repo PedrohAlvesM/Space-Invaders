@@ -29,8 +29,6 @@ export class Jogo {
 
         this.tela.width = window.innerWidth / 3;
         this.tela.height = window.innerHeight - 10;
-
-        // window.addEventListener("resize", this.DefineTamanhoTelaJogo);
     }
 
     DesenhaNaTela() {
@@ -57,8 +55,12 @@ export class Jogo {
             return
         }
         else if (this.inimigosArr.length === 0) {
-            // this.venceu = true;
-            // return
+            for (let i = 0; i < this.inimigosArr.length; i++) {
+                this.inimigosArr[i].projeteis.forEach(p => p.y = this.tela.height+1);
+            }
+            this.player.projeteis.forEach(p => p.y = -1);
+            this.DeletaProjetilForaDaTela();
+
             this.player.projeteis = [];
             this.level++;
             
@@ -73,6 +75,7 @@ export class Jogo {
 
         for (let i = 0; i < this.inimigosArr.length; i++) {
             if (this.inimigosArr[i].morto) {
+                this.inimigosArr[i].projeteis.forEach(p => p.morto = true);
                 this.inimigosArr.splice(i, 1);
                 continue
             }
@@ -119,9 +122,7 @@ export class Jogo {
                         let i = this.hudMostrarPontos.indexOf(t);
                         this.hudMostrarPontos.splice(i, 1);
                     }, 300);
-
-                    this.inimigosArr.splice(j, 1);
-                    this.player.projeteis.splice(i, 1);
+                    this.player.projeteis[i].morto = true;
                     console.log("Inimigo morto");
                     console.log("Colisão entre projetil e inimigo");
                     break
@@ -138,7 +139,7 @@ export class Jogo {
                         console.log("Colisão entre projetil e player\nVida do player: " + this.player.vida);
 
                         this.player.invencibilidade = true;
-                        this.inimigosArr[i].projeteis.splice(j, 1);
+                        this.inimigosArr[i].projeteis[j].morto = true;
                         this.hudVidaPlayer.pop();
                         setTimeout(() => { this.player.invencibilidade = false; }, 1000);
 
@@ -160,7 +161,6 @@ export class Jogo {
 
         for (let i = 0; i < nLinhas; i++) {
             for (let j = 0; j < inimigoPLinha; j++) {
-                // let central = startX + (j + i) * (largura + espacoEntreInimigo);
                 let inicio = (largura * j) + j * 10;
 
                 if (i === 0) {
@@ -194,22 +194,30 @@ export class Jogo {
 
     DeletaProjetilForaDaTela() {
         for (let i = 0; i < this.player.projeteis.length; i++) {
-            if (this.player.projeteis[i].y < 0) {
+            if (this.player.projeteis[i].y < 0 || this.player.projeteis[i].morto) {
                 this.player.projeteis.splice(i, 1);
                 console.log("Projetil fora da tela deletado");
             }
         }
-
+        
         for (let i = 0; i < this.inimigosArr.length; i++) {
             for (let j = 0; j < this.inimigosArr[i].projeteis.length; j++) {
-                if (this.inimigosArr[i].projeteis[j].y > this.tela.height) {
+                if (this.inimigosArr[i].projeteis[j].y > this.tela.height || this.inimigosArr[i].projeteis[j].morto) {
                     this.inimigosArr[i].projeteis.splice(j, 1);
+                    console.log("Projetil fora da tela deletado");
                 }
             }
         }
     }
 
     GameOver() {
+        for (let i = 0; i < this.inimigosArr.length; i++) {
+            this.inimigosArr[i].projeteis.forEach(p => p.y = this.tela.height+1);
+        }
+        this.DeletaProjetilForaDaTela();
+
+        this.ctx.clearRect(0,0,this.tela.width, this.tela.height);
+
         let pontuacao = 0;
         new TextoUI(this.tela.width/2, this.tela.height/2, "Game Over", this.ctx, {fonte: "'Press Start 2P'", tamanho: 24, cor: "#fff", modificadorFonte: "bold"}).DesenhaNaTela();
         new TextoUI(this.tela.width/2, this.tela.height/2+48, `Pontuação: ${this.player.pontos}`, this.ctx, {fonte: "'Press Start 2P'", tamanho: 24, cor: "#fff", modificadorFonte: "bold"}).DesenhaNaTela();
@@ -240,7 +248,6 @@ export class Jogo {
     IniciaJogo() {
         console.log("Iniciando jogo...");
         this.DefineTamanhoTelaJogo();
-        // this.CriaInimigos(5, 5, 50, 50);
         this.CriaInimigos(5, 25, 50, 50);
         
         if (this.inimigosArr.length > 0) {

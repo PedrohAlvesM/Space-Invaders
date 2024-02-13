@@ -34,8 +34,6 @@ export class Inimigo extends Entidade {
         if (this.x+this.largura+10 > larguraTela) {
             this.x = 10;
             this.y += this.altura;
-
-            // this.velocidade+= 0.1;
         }
         this.x += this.velocidade;
     }

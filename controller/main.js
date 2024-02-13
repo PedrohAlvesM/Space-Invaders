@@ -5,7 +5,6 @@ document.getElementById("btn-comecar").addEventListener("click", ()=>{
     document.getElementById("jogo").style.display = "block";
     const jogo = new Jogo();
     jogo.IniciaJogo();
-    // document.body.style.gridTemplateColumns = "1fr 1fr"; 
 
 });
 
