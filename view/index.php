@@ -1,3 +1,8 @@
+<?php 
+    session_start();
+    $_SESSION["logado"] = true;
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 

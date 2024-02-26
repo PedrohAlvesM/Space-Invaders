@@ -241,8 +241,46 @@ export class Jogo {
         catch (e) {
             new TextoUI(this.tela.width/2, this.tela.height/2+96, `Não foi possível obter ou salvar o High Score`, this.ctx, {fonte: "'Press Start 2P'", tamanho: 16, cor: "#fff", modificadorFonte: "bold"}).DesenhaNaTela();
         }
+        this.AtualizaPontuacaoOnline();
 
         new TextoUI(this.tela.width/2, this.tela.height/2+96, `High Score: ${pontuacao}`, this.ctx, {fonte: "'Press Start 2P'", tamanho: 24, cor: "#fff", modificadorFonte: "bold"}).DesenhaNaTela();
+    }
+
+    async AtualizaPontuacaoOnline() {
+        const dados = new FormData();
+        dados.append("nome", "Pedeo");
+        dados.append("pontuacao", this.player.pontos);
+    
+        fetch("../model/criarUsuarioPontuacao.php", {
+            method: "POST",
+            body: dados,
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } 
+                throw new Error(`Erro na requisição: ${response.statusText}`);
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error(`Erro durante a requisição: ${error.message}`);
+            });
+    }
+    
+    async ObterTopPontuacoes(quantidade) {
+        try {
+            const resposta = await fetch(`../model/getRankingPontuacao.php?quantidade=${quantidade}`, {method: "GET"});
+            if (!resposta.ok) {
+                throw new Error("Erro durante a requisição: "+resposta.statusText);
+            }
+    
+            return await resposta.json();
+        }
+        catch(erro) {
+            return erro
+        }
     }
 
     IniciaJogo() {

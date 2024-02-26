@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2024 at 03:04 PM
+-- Generation Time: Feb 26, 2024 at 02:16 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,29 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `ranking`
 --
-CREATE DATABASE IF NOT EXISTS `ranking` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `ranking`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pontuacao`
+-- Table structure for table `jogador`
 --
 
-CREATE TABLE `pontuacao` (
+CREATE TABLE `jogador` (
   `id` int(11) NOT NULL,
-  `nome` varchar(24) NOT NULL,
-  `pontuacao` smallint(6) NOT NULL
-);
-
+  `nome` varchar(32) NOT NULL,
+  `email` varchar(64) DEFAULT NULL,
+  `senha` varchar(60) NOT NULL,
+  `pontuacao` int(11) NOT NULL,
+  `level` int(11) NOT NULL
+)
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `pontuacao`
+-- Indexes for table `jogador`
 --
-ALTER TABLE `pontuacao`
+ALTER TABLE `jogador`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -50,9 +50,9 @@ ALTER TABLE `pontuacao`
 --
 
 --
--- AUTO_INCREMENT for table `pontuacao`
+-- AUTO_INCREMENT for table `jogador`
 --
-ALTER TABLE `pontuacao`
+ALTER TABLE `jogador`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
