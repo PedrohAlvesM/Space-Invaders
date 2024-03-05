@@ -2,18 +2,17 @@
     require "conexao.php";
 
     if (!empty($_GET["quantidade"])) {
-        $quantidade = intval($_GET["quantidade"], 10);
-        
-        if ($quantidade === 0) {
+        $quantidade = filter_input(INPUT_GET, 'quantidade', FILTER_VALIDATE_INT);
+        if ($quantidade == "") {
             header('Content-Type: application/json');
             http_response_code(400);
-            echo json_encode(array("erro"=>"Quantidade deve ser um número inteiro"));
+            echo json_encode(array("erro"=>"Quantidade deve ser um número inteiro."));
             exit;
         }
 
-        $select = "SELECT nome, pontuacao FROM pontuacao ORDER BY pontuacao DESC LIMIT $quantidade";
+        $select = "SELECT nome, pontuacao FROM jogador ORDER BY pontuacao DESC LIMIT $quantidade";
         $stmt = $banco->query($select);
-        $ranking = $stmt->fetchAll();
+        $ranking = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         header('Content-Type: application/json');
         http_response_code(200);

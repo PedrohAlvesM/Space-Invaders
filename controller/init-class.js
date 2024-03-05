@@ -22,6 +22,8 @@ export class Jogo {
         this.framerate;
         this.perdeu = false;
         this.venceu = false;
+
+        this.TOKEN;
     }
 
     DefineTamanhoTelaJogo() {
@@ -241,9 +243,23 @@ export class Jogo {
         catch (e) {
             new TextoUI(this.tela.width/2, this.tela.height/2+96, `Não foi possível obter ou salvar o High Score`, this.ctx, {fonte: "'Press Start 2P'", tamanho: 16, cor: "#fff", modificadorFonte: "bold"}).DesenhaNaTela();
         }
-        this.AtualizaPontuacaoOnline();
+        //this.AtualizaPontuacaoOnline();
 
         new TextoUI(this.tela.width/2, this.tela.height/2+96, `High Score: ${pontuacao}`, this.ctx, {fonte: "'Press Start 2P'", tamanho: 24, cor: "#fff", modificadorFonte: "bold"}).DesenhaNaTela();
+
+        setTimeout(()=>{
+            document.getElementsByClassName("modal")[0].style.display = "grid";
+        }, 2000);
+    }
+
+    async PegaToken() {
+        const url = "../model/autenticacao.php";
+        const resposta = await fetch(url, {method: "POST"});
+        if (!resposta.ok) {
+            throw new Error("Erro ao fazer requisição do Token: "+ resposta.status);
+        }
+        
+        return await resposta.json();
     }
 
     async AtualizaPontuacaoOnline() {
@@ -251,7 +267,7 @@ export class Jogo {
         dados.append("nome", "Pedeo");
         dados.append("pontuacao", this.player.pontos);
     
-        fetch("../model/criarUsuarioPontuacao.php", {
+        fetch("../model/criarJogador.php", {
             method: "POST",
             body: dados,
         })
@@ -283,8 +299,10 @@ export class Jogo {
         }
     }
 
-    IniciaJogo() {
+    async IniciaJogo() {
         console.log("Iniciando jogo...");
+        this.TOKEN = await this.PegaToken();
+        
         this.DefineTamanhoTelaJogo();
         this.CriaInimigos(5, 25, 50, 50);
         

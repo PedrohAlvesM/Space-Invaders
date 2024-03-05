@@ -1,8 +1,3 @@
-<?php 
-    session_start();
-    $_SESSION["logado"] = true;
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -18,6 +13,7 @@
 </head>
 
 <body>
+    
     <main class="container">
         <div id="logo-container">
             <h1 id="logo" class="">SPACE INVADERS</h1>
@@ -47,27 +43,51 @@
         <button id="btn-voltar"> Voltar para o menu </button>
 
     </main>
-
+    
     <section id="jogo">
         <canvas id="canvas"></canvas>
-        <section style="display: none;">
-            <div>
-                <span class="sprite nave"></span>
-                <p id="vida">0</p>
-            </div>
-            <div>
-                <span class="sprite inimigo"></span>
-                <p id="nInimigos">0</p>
-            </div>
-            <div>
-                <p id="level">Level: 0</p>
-            </div>
+
+        <section class="modal" id="conta">
+            <form action="javascript:void(0)" method="POST">
+                <h1>Registrar</h1>
+    
+                <label for="nomeRegistrar">Nome</label>
+                <input required type="text" name="nomeRegistrar" id="nomeRegistrar" maxlength="32">
+    
+                <label for="emailRegistrar">Email (não obrigatório)</label>
+                <input type="email" name="emailRegistrar" id="emailRegistrar" maxlength="64">
+    
+                <label for="senhaRegistrar">Senha</label>
+                <input required type="password" name="senhaRegistrar" id="senhaRegistrar" maxlength="60">
+    
+                <label for="senhaConfirmarRegistrar">Senha</label>
+                <input required type="password" id="senhaConfirmarRegistrar" maxlength="60">
+    
+                <button id="registrar">Registrar</button>
+            </form>
+    
+            <form action="void:javascript(0)" method="POST">
+                <h1>Entrar</h1>
+                
+                <label for="nomeEntrar">Nome</label>
+                <input required type="text" name="nomeEntrar" id="nomeEntrar" maxlength="32">
+    
+                <label for="emailEntrar">Email (não obrigatório)</label>
+                <input required type="email" name="emailEntrar" id="emailEntrar" maxlength="60">
+    
+                <label for="senhaEntrar">Senha</label>
+                <input type="password" name="senhaEntrar" id="senhaEntrar" maxlength="60">
+    
+                <button id="registrar">Entrar</button>
+    
+            </form>
+
+            <button id="reiniciar-jogo">reiniciar-jogo</button>
+            
         </section>
-
     </section>
+
     <canvas id="estrelas"></canvas>
-
-
 
     <section id="assets">
         <img src="../assets/aviao.png" id="nave">

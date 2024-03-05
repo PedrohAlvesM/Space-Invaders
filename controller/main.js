@@ -5,7 +5,8 @@ document.getElementById("btn-comecar").addEventListener("click", ()=>{
     document.getElementById("jogo").style.display = "block";
     const jogo = new Jogo();
     jogo.IniciaJogo();
-
+    
+    document.getElementById("reiniciar-jogo").addEventListener("click", jogo.IniciaJogo);
 });
 
 document.getElementById("btn-sobre").addEventListener("click", ()=>{
@@ -27,3 +28,28 @@ document.getElementById("btn-voltar").addEventListener("click", ()=>{
     document.querySelector("main > menu").style.display = "block";
     document.getElementById("btn-voltar").style.display = "none";
 });
+
+function FormularioValido(formulario) {
+    const tamanhoMaximoTexto = 32;
+    const tamanhoMaximoSenha = 60;
+    const tamanhoMaximoEmail = 60;
+
+    const input = formulario.querySelectorAll("input");
+
+    for (let dado in input) {
+        const valor = dado.value.trim();
+
+        if (dado.type === "text") {
+            if (valor.length > tamanhoMaximoTexto || valor.length === 0) {
+                throw new Error("Nome inserido ultrapassa o máximo de caracteres ou está vazio");
+            }
+        }
+        else if (dado.type === "email" || dado.type === "password") {
+            if (valor.length > tamanhoMaximoEmail || valor.length < 10) { //a@gmail.com
+                throw new Error("Email ou senha ultrapassa o tamanho máximo de caracteres ou está vazio.")
+            }
+
+        }
+    }
+    return true
+}

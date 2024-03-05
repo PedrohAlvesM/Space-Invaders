@@ -13,14 +13,14 @@ export class Inimigo extends Entidade {
             
             for (let i = 0; i < num;  i++) {
                 let velocidadeAlatoria = Math.floor(Math.random() * 10);
-                let p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, "inimigo", "laser-inimigo", 48+velocidadeAlatoria);
+                let p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, 1, "inimigo", "laser-inimigo", 48+velocidadeAlatoria);
                 this.projeteis.push(p);
                 p.IniciaTrajetoria(true);
             }
             return
         }
         
-        const p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, "inimigo", "laser-inimigo", 48);
+        const p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, 1, "inimigo", "laser-inimigo", 48);
         this.projeteis.push(p);
 
         if (this.atiraAleatorio) {

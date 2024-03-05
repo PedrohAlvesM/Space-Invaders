@@ -1,7 +1,7 @@
 import { Entidade } from "./entidade-class.js";
 export class Projetil extends Entidade{
     
-    constructor (x, y, largura, altura, contexto, atirou, idSprite, velocidade){
+    constructor (x, y, largura, altura, contexto, vida, atirou, idSprite, velocidade){
         super(x, y,largura,altura,contexto,vida,idSprite, velocidade);
         this.atirou = atirou;
 
