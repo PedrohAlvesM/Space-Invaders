@@ -1,0 +1,39 @@
+#canvas {
+    border: 1px solid black;
+}
+
+#jogo {
+    position: absolute;
+    z-index: 1;
+    width: 50%;
+}
+
+#jogo > section {
+    width: 200px;
+
+    border: 1px solid orange;
+}
+
+#assets {
+    display: none;
+}
+
+#nave-inimigo {
+    filter: hue-rotate(90deg);
+}
+
+#jogo {
+    display: none; /*grid*/
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    place-items: center;
+}
+
+
+#canvas {
+    grid-row: 1/4;
+}
+
+#reiniciar-jogo, #registrar-entrar {
+    width: 100%;
+}

@@ -3,25 +3,25 @@
 require_once("conexao.php");
 require_once("main.php");
 
-if (!isset($_POST["TOKEN"])) {
+if (!isset($_COOKIE["TOKEN"])) {
     header('Content-Type: application/json');
     http_response_code(400);
-    echo json_encode(array("erro"=>"Token de autenticação não fornecido."));
+    echo json_encode(array("erro" => "Token de autenticação não fornecido."));
     exit;
 }
 
-if (!TokenValido($_POST["TOKEN"])) {
+if (!TokenValido($_COOKIE["TOKEN"])) {
     exit;
 }
 
-if (!empty($_POST["nome"] && !empty($_POST["pontuacao"]) && !empty($_POST["level"]))) {
-    $nome = filter_input(INPUT_POST,"nome", FILTER_SANITIZE_SPECIAL_CHARS);
+if (!empty($_POST["nome"]) && !empty($_POST["pontuacao"]) && !empty($_POST["level"])) {
+    $nome = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_SPECIAL_CHARS);
     $pontuacao =  filter_input(INPUT_POST, 'pontuacao', FILTER_VALIDATE_INT);
     $level = filter_input(INPUT_POST, 'level', FILTER_VALIDATE_INT);
     if ($level == "" || $pontuacao == "") {
         header('Content-Type: application/json');
         http_response_code(400);
-        echo json_encode(array("erro"=>"Level ou pontuação são inválidos"));
+        echo json_encode(array("erro" => "Level ou pontuação são inválidos"));
         exit;
     }
 

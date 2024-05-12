@@ -8,23 +8,43 @@
     <link rel="icon" type="image/x-icon" href="../assets/aviao.png">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="jogo.css">
+    <link rel="stylesheet" href="conta.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
     <title>Space Invaders</title>
 </head>
 
 <body>
+
+    <section class="cookies container-flex-column">
+        <div>
+            <h1>Cookies</h1>
+            <p>Este site utiliza Cookies temporários para salvar dados de autorização e manter a sua conexão segura. Nenhum dado inserido será compartilhada com terceiros.</p>
+            <div class="container-flex-row">
+                <button id="recusar-cookies">Recusar Cookies</button>
+                <button id="aceitar-cookies">Aceitar Cookies</button>
+            </div>
+        </div>
+    </section>
     
-    <main class="container">
-        <div id="logo-container">
-            <h1 id="logo" class="">SPACE INVADERS</h1>
+    <main class="container-flex-column">
+        <div class="logo-container">
+            <h1 class="logo" class="">SPACE INVADERS</h1>
         </div>
         <menu class="">
             <li id="btn-comecar">Jogar</li>
             <li id="btn-como-jogar">Como jogar?</li>
             <li id="btn-sobre">O que é Space Invaders?</li>
-        </menu>
+            <li id="btn-tela-login">Registrar / Logar</li>
+        </menu>    
+    </main>
+    
+    <section class="container-flex-column sobre">
+        <div class="logo-container">
+            <h1 class="logo" class="">SPACE INVADERS</h1>
+        </div>
 
-        <section class="container sobre">
+        <p>
             Space Invaders, lançado em 1978 pela Taito Corporation para fliperamas, desempenhou um papel crucial na
             história dos videogames. Sua revolucionária introdução do conceito de high score incentivou os jogadores a
             competir por pontuações cada vez mais altas nas máquinas de arcade, tornando-se um marco na cultura dos
@@ -32,62 +52,66 @@
             caminho para o sucesso de muitos títulos subsequentes. Ainda hoje, Space Invaders é reverenciado como um dos
             jogos mais influentes de todos os tempos. Em uma homenagem à sua importância, reimaginei esse clássico
             usando JavaScript, destacando seu legado duradouro no mundo dos jogos eletrônicos.
-        </section>
+        </p>
+        <button class="btn-voltar"> Voltar para o menu </button>
+    </section>
+    
+    <section class="container-flex-column como-jogar">
+        <div class="logo-container">
+            <h1 class="logo" class="">SPACE INVADERS</h1>
+        </div>
 
-        <section class="container como-jogar">
-            <p>Se movimente usando (setinhas yeah)</p>
-            <p>Mate os <img src="../assets/aviao-inimigo.png" style="transform: rotate(180deg)"> para fazer pontos</p>
-            <p>Quando matar todos os inimigos começará uma nova onda</p>
-        </section>
-
-        <button id="btn-voltar"> Voltar para o menu </button>
-
-    </main>
+        <p>Se movimente usando (setinhas yeah)</p>
+        <p>Mate os <img src="../assets/aviao-inimigo.png" style="transform: rotate(180deg)"> para fazer pontos</p>
+        <p>Quando matar todos os inimigos começará uma nova onda</p>
+        <button class="btn-voltar"> Voltar para o menu </button>
+    </section>
     
     <section id="jogo">
         <canvas id="canvas"></canvas>
-
-        <section class="modal" id="conta">
-            <form action="javascript:void(0)" method="POST">
-                <h1>Registrar</h1>
-    
-                <label for="nomeRegistrar">Nome</label>
-                <input required type="text" name="nomeRegistrar" id="nomeRegistrar" maxlength="32">
-    
-                <label for="emailRegistrar">Email (não obrigatório)</label>
-                <input type="email" name="emailRegistrar" id="emailRegistrar" maxlength="64">
-    
-                <label for="senhaRegistrar">Senha</label>
-                <input required type="password" name="senhaRegistrar" id="senhaRegistrar" maxlength="60">
-    
-                <label for="senhaConfirmarRegistrar">Senha</label>
-                <input required type="password" id="senhaConfirmarRegistrar" maxlength="60">
-    
-                <button id="registrar">Registrar</button>
-            </form>
-    
-            <form action="void:javascript(0)" method="POST">
-                <h1>Entrar</h1>
-                
-                <label for="nomeEntrar">Nome</label>
-                <input required type="text" name="nomeEntrar" id="nomeEntrar" maxlength="32">
-    
-                <label for="emailEntrar">Email (não obrigatório)</label>
-                <input required type="email" name="emailEntrar" id="emailEntrar" maxlength="60">
-    
-                <label for="senhaEntrar">Senha</label>
-                <input type="password" name="senhaEntrar" id="senhaEntrar" maxlength="60">
-    
-                <button id="registrar">Entrar</button>
-    
-            </form>
-
-            <button id="reiniciar-jogo">reiniciar-jogo</button>
-            
-        </section>
+        <button id="reiniciar-jogo">Reiniciar jogo</button>
+        <button id="registrar-entrar">Registrar / Entrar</button>
+        <button class="btn-voltar"> Voltar para o menu </button>
     </section>
 
-    <canvas id="estrelas"></canvas>
+    <section class="modal" id="conta">
+        <div class="logo-container">
+            <h1 class="logo" class="">SPACE INVADERS</h1>
+        </div>
+
+        <form class="form-registrar" action="javascript:void(0)" method="POST">
+            <h1>Registrar</h1>
+
+            <label for="nomeRegistrar">Nome</label>
+            <input required type="text" name="nome" maxlength="32">
+
+            <label for="senhaRegistrar">Senha</label>
+            <input required type="password" name="senha" maxlength="60">
+
+            <label for="confirmarSenha">Confirmar senha</label>
+            <input required type="password" name="confirmar-senha" maxlength="60">
+            <p class="mensagem-registrar">Deu certo</p>
+
+            <button id="registrar">Registrar</button>
+        </form>
+
+        <form class="form-entrar" action="void:javascript(0)" method="POST">
+            <h1>Entrar</h1>
+            
+            <label for="nome">Nome</label>
+            <input required type="text" name="nome" maxlength="32">
+
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" maxlength="60">
+            <p class="mensagem-entrar">Deu certo</p>
+
+            <button id="entrar">Entrar</button>
+
+        </form>
+
+        <button id="fechar-login">Fechar</button>
+        
+    </section>
 
     <section id="assets">
         <img src="../assets/aviao.png" id="nave">
@@ -101,7 +125,6 @@
 
 
     <script type="module" src="../controller/main.js"></script>
-    <script src="../controller/estrelas-animacao.js"></script>
 </body>
 
 </html>

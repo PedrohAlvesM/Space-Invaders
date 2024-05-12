@@ -30,7 +30,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `jogador` (
   `id` int(11) NOT NULL,
   `nome` varchar(32) NOT NULL,
-  `email` varchar(64) DEFAULT NULL,
   `senha` varchar(60) NOT NULL,
   `pontuacao` int(11) NOT NULL,
   `level` int(11) NOT NULL
