@@ -5,13 +5,14 @@ use Firebase\JWT\Key;
 
 require_once("../vendor/autoload.php");
 
+$dotenv = Dotenv\Dotenv::createImmutable("../");
+$dotenv->load();
+
 session_start();
 
-$CHAVE_CRIPTOGRAFIA = "";
-$ALGORITMO_CRIPTOGRAFIA = "";
-
 function TokenValido($token) {
-    global $CHAVE_CRIPTOGRAFIA, $ALGORITMO_CRIPTOGRAFIA;
+    $chave = $_ENV["CHAVE_CRIPTOGRAFIA"];
+    $algoritmo = $_ENV["ALGORITMO_CRIPTOGRAFIA"];
 
     if (!isset($token)) {
         header('Content-Type: application/json');
@@ -27,7 +28,7 @@ function TokenValido($token) {
     }
 
     try {
-        $expirado = JWT::decode($token, new Key($CHAVE_CRIPTOGRAFIA, $ALGORITMO_CRIPTOGRAFIA));
+        $expirado = JWT::decode($token, new Key($chave, $algoritmo));
     } catch (Exception $e) {
         if ($e->getMessage() === "Expired Token") {
             header('Content-Type: application/json');
@@ -41,7 +42,8 @@ function TokenValido($token) {
 }
 
 function CriarToken() {
-    global $CHAVE_CRIPTOGRAFIA, $ALGORITMO_CRIPTOGRAFIA;
+    $chave = $_ENV["CHAVE_CRIPTOGRAFIA"];
+    $algoritmo = $_ENV["ALGORITMO_CRIPTOGRAFIA"];
 
     $data = new DateTimeImmutable();
     $dataExpirar = $data->modify('+1 hour')->getTimestamp();
@@ -52,5 +54,5 @@ function CriarToken() {
         'exp'  => $dataExpirar,
     ];
 
-    return JWT::encode($request_data, $CHAVE_CRIPTOGRAFIA, $ALGORITMO_CRIPTOGRAFIA);
+    return JWT::encode($request_data, $chave, $algoritmo);
 }
