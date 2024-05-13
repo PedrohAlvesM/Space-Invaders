@@ -1,7 +1,7 @@
 <?php
 
-require "main.php";
-require "conexao.php";
+require "../model/main.php";
+require "../model/conexao.php";
 
 if  (!empty($_POST["nome"]) && !empty($_POST["senha"])) {
     $nome = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_SPECIAL_CHARS);

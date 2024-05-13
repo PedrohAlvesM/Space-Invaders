@@ -1,5 +1,5 @@
 <?php
-    require "conexao.php";
+    require "../model/conexao.php";
 
     if (!empty($_GET["quantidade"])) {
         $quantidade = filter_input(INPUT_GET, 'quantidade', FILTER_VALIDATE_INT);

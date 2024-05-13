@@ -1,7 +1,7 @@
 <?php
 
-require_once("conexao.php");
-require_once("main.php");
+require_once("../model/conexao.php");
+require_once("../model/main.php");
 
 if (!isset($_COOKIE["TOKEN"])) {
     header('Content-Type: application/json');

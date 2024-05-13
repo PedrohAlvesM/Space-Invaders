@@ -265,7 +265,7 @@ export class Jogo {
         dados.append("level", this.level);
 
         try {
-            const resposta = await fetch(`../model/atualizarJogador.php`, { method: "POST", body: dados });
+            const resposta = await fetch(`../api/atualizarJogador.php`, { method: "POST", body: dados });
             const dados = await resposta.json();
             if (!resposta.ok || dados.erro) {
                 return dados;
@@ -280,7 +280,7 @@ export class Jogo {
 
     async ObterTopPontuacoes(quantidade) {
         try {
-            const resposta = await fetch(`../model/getRankingPontuacao.php?quantidade=${quantidade}`, { method: "GET" });
+            const resposta = await fetch(`../api/getRankingPontuacao.php?quantidade=${quantidade}`, { method: "GET" });
             if (!resposta.ok) {
                 throw new Error("Erro durante a requisição: " + resposta.statusText);
             }

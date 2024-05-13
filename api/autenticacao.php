@@ -1,5 +1,5 @@
 <?php
-require_once("main.php");
+require_once("../model/main.php");
 
 if (session_status() != 2) {
     session_start();

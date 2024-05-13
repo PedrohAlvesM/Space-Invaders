@@ -1,5 +1,5 @@
 <?php
-require_once("conexao.php");
+require_once("../model/conexao.php");
 
 if (!empty($_GET["nome"])) {
     $nome = filter_input(INPUT_GET, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
