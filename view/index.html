@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="jogo.css">
     <link rel="stylesheet" href="conta.css">
+    <link rel="stylesheet" href="ranking.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
     <title>Space Invaders</title>
 </head>
@@ -36,6 +37,7 @@
             <li id="btn-como-jogar">Como jogar?</li>
             <li id="btn-sobre">O que é Space Invaders?</li>
             <li id="btn-tela-login">Registrar / Logar</li>
+            <li id="btn-tela-ranking">Ranking</li>
         </menu>    
     </main>
     
@@ -111,6 +113,19 @@
 
         <button id="fechar-login">Fechar</button>
         
+    </section>
+
+    <section class="ranking container-flex-column">
+        <div class="logo-container">
+            <h1 class="logo">SPACE INVADERS</h1>
+        </div>
+        <h1>Ranking</h1>
+        <p class="mensagem-ranking"></p>
+
+            <div id="jogadores">
+                <!-- jogadores carregados via Javascript -->
+            </div>
+        <button class="btn-voltar"> Voltar para o menu </button>
     </section>
 
     <section id="assets">

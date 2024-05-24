@@ -10,7 +10,7 @@
             exit;
         }
 
-        $select = "SELECT nome, pontuacao FROM jogador ORDER BY pontuacao DESC LIMIT $quantidade";
+        $select = "SELECT nome, pontuacao, level FROM jogador ORDER BY pontuacao DESC LIMIT $quantidade";
         $stmt = $banco->query($select);
         $ranking = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

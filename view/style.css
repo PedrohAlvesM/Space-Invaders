@@ -50,7 +50,7 @@ menu > li, button {
     cursor: pointer;
 }
 
-button {
+button, .jogador {
     display: block;
     background-color: transparent;
     font: inherit;
