@@ -278,20 +278,6 @@ export class Jogo {
         }
     }
 
-    async ObterTopPontuacoes(quantidade) {
-        try {
-            const resposta = await fetch(`../api/getRankingPontuacao.php?quantidade=${quantidade}`, { method: "GET" });
-            if (!resposta.ok) {
-                throw new Error("Erro durante a requisição: " + resposta.statusText);
-            }
-
-            return await resposta.json();
-        }
-        catch (erro) {
-            return erro
-        }
-    }
-
     async IniciaJogo() {
         console.log("Iniciando jogo...");
 

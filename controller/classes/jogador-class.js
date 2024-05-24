@@ -18,7 +18,7 @@ export class Jogador {
         try {
             if (this.#TOKEN === null) await this.PegaToken();
 
-            const requisicao = await fetch(`../api/criarJogador.php`, 
+            const requisicao = await fetch(`../../api/criarJogador.php`, 
                 { 
                     method: "POST",
                     body: dados,
@@ -45,7 +45,7 @@ export class Jogador {
         try {
             if (this.#TOKEN === null) await this.PegaToken();
 
-            const requisicao = await fetch(`../api/logarJogador.php`, { 
+            const requisicao = await fetch(`../../api/logarJogador.php`, { 
                 method: "POST",
                 body: dadosEnviar,
                 headers: {
@@ -73,10 +73,10 @@ export class Jogador {
     }
 
     async PegaToken() {
-        const url = "../api/autenticacao.php";
+        const url = "../../api/autenticacao.php";
         const resposta = await fetch(url, { method: "POST" });
         if (!resposta.ok) {
-            const mensagemErro = await requisicao.json();
+            const mensagemErro = await resposta.json();
             return mensagemErro.erro;
         }
 

@@ -23,9 +23,6 @@ body {
     display: grid;
     place-items: center;
 }
-main > .sobre, .como-jogar {
-    display: none;
-}
 
 menu {
     list-style: none;
@@ -37,12 +34,11 @@ main, main > section {
     height: 100%;
 }
 
-section.como-jogar, section.sobre {
+.como-jogar, .sobre {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    display: none;
 }
 
-menu > li, button {
+menu > li, button, a {
     width: 255px;
     height: 48px;
     margin: 16px;
@@ -50,13 +46,21 @@ menu > li, button {
     cursor: pointer;
 }
 
-button, .jogador {
+button, a, .jogador {
     display: block;
     background-color: transparent;
     font: inherit;
     animation: spin 2s linear infinite;
     color: var(--cor-primaria);
     text-shadow: 1px 0px var(--cor-secundaria), 0px 1px var(--cor-secundaria), -1px 0px var(--cor-secundaria), 0px -1px var(--cor-secundaria);
+}
+
+a {
+    text-decoration: none;
+}
+
+li > a {
+    animation: none;
 }
 
 menu > li:hover {
