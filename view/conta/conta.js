@@ -24,3 +24,24 @@ document.getElementById("registrar").addEventListener("click", async (e) => {
         document.getElementsByClassName("mensagem-registrar")[0].style.opacity = "100";
     }
 });
+
+document.getElementById("abrir-modal").addEventListener("click", ()=>{
+    document.getElementsByClassName("modal-overlay")[0].style.display = "flex";
+});
+document.getElementById("fechar-modal").addEventListener("click", ()=>{
+    document.getElementsByClassName("modal-overlay")[0].style.display = "none";
+});
+
+document.getElementById("deletar-conta").addEventListener("click", async () => {
+    const mensagem = await jogador.DeletarJogador(document.getElementsByClassName("form-entrar")[0]);
+
+    if (mensagem.sucesso) {
+        document.getElementsByClassName("mensagem-entrar")[0].innerText = `${mensagem.sucesso}`;
+        document.getElementsByClassName("mensagem-entrar")[0].style.opacity = "100";
+    }
+    else {
+        document.getElementsByClassName("mensagem-entrar")[0].innerText = `${mensagem.erro} Tente novamente.`;
+        document.getElementsByClassName("mensagem-entrar")[0].style.opacity = "100";
+    }
+    document.getElementsByClassName("modal-overlay")[0].style.display = "none";
+});

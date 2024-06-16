@@ -12,6 +12,17 @@
 </head>
 <body>
     <main id="conta">
+        <div class="modal-overlay">
+            <div class="modal">
+                <h1>Você tem certeza que deseja apagar a sua conta?</h1>
+                <p>Ao apagar a conta todos os seus dados seram perdidos e essa ação não poderá ser revertida.</p>
+                <p>Preencha os dados no formulário</p>
+                <div>
+                    <button id="fechar-modal">Fechar</button>
+                    <button id="deletar-conta">Deletar conta</button>
+                </div>
+            </div>
+        </div>
         <div class="logo-container">
             <h1 class="logo" class="">SPACE INVADERS</h1>
         </div>
@@ -27,7 +38,7 @@
 
             <label for="confirmarSenha">Confirmar senha</label>
             <input required type="password" name="confirmar-senha" maxlength="60">
-            <p class="mensagem-registrar">Deu certo</p>
+            <p class="mensagem-registrar"></p>
 
             <button id="registrar">Registrar</button>
         </form>
@@ -40,9 +51,10 @@
 
             <label for="senha">Senha</label>
             <input type="password" name="senha" maxlength="60">
-            <p class="mensagem-entrar">Deu certo</p>
+            <p class="mensagem-entrar"></p>
 
             <button id="entrar">Entrar</button>
+            <button id="abrir-modal">Deletar conta</button>
 
         </form>
 

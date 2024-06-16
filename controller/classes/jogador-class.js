@@ -72,6 +72,34 @@ export class Jogador {
         }
     }
 
+    async DeletarJogador(form) {
+        const dadosEnviar = new FormData(form);
+        
+        if (dadosEnviar.get("nome") === "" || dadosEnviar.get("senha") === "") {
+            throw new Error("Nome ou senha estão vazios.");
+        }
+
+        try {
+            const requisicao = await fetch("../../api/deletarJogador.php", {
+                method: "POST",
+                body: dadosEnviar,
+                headers: {
+                    "mode": "same-origin",
+                }
+            });
+
+            const dados = await requisicao.json();
+            if (!requisicao.ok || dados.erro) {
+                return dados;
+            }
+
+            return dados;
+        }
+        catch (erro) {
+            throw erro;
+        }
+    }
+
     async PegaToken() {
         const url = "../../api/autenticacao.php";
         const resposta = await fetch(url, { method: "POST" });
