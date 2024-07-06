@@ -11,7 +11,7 @@ if  (!empty($_POST["nome"]) && !empty($_POST["senha"])) {
     $stmt = $banco->query($verificaDados);
     $jogadorLogado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if (!password_verify($senha, $jogadorLogado[0]["senha"])) {
+    if (!empty($jogadorLogado) && !password_verify($senha, $jogadorLogado[0]["senha"])) {
         header('Content-Type: application/json');
         http_response_code(400);
         echo json_encode(array("erro" => "Senha incorreta."));
