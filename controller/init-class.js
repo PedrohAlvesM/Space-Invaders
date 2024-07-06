@@ -91,26 +91,21 @@ export class Jogo {
         }
 
         for (let i = 0; i < this.inimigosArr.length; i++) {
-            if (this.inimigosArr[i].morto) {
-                this.inimigosArr[i].projeteis.forEach(p => p.morto = true);
-                this.inimigosArr.splice(i, 1);
-                continue
-            }
-
             if (this.inimigosArr[i].y - this.inimigosArr[i].altura >= this.player.y - this.player.altura * 2) {
                 this.perdeu = true;
                 break
             }
-
-            this.inimigosArr[i].Movimento(this.tela.width);
-            this.inimigosArr[i].projeteis.forEach(p => p.Viajando());
         }
+        this.inimigosArr = this.inimigosArr.filter(inimigo => !inimigo.morto);
 
         this.hudPontuacao.texto = String(this.player.pontos);
         this.hudLevel.texto = `level ${this.level}`;
+        
+        this.inimigosArr.forEach(inimigo => inimigo.Movimento(this.tela.width));
+        this.inimigosArr.forEach(inimigo => inimigo.projeteis.forEach(p => p.Viajando()));
+        this.player.projeteis.forEach(p => p.Viajando());
 
         this.DesenhaNaTela();      
-        this.player.projeteis.forEach(p => p.Viajando());
         this.DeletaProjetilForaDaTela();
         this.DetectaColisao();
 
@@ -208,24 +203,13 @@ export class Jogo {
             atira = Math.floor(Math.random() * this.inimigosArr.length);
         }
         this.inimigosArr[atira].Atirar();
-
     }
 
     DeletaProjetilForaDaTela() {
-        for (let i = 0; i < this.player.projeteis.length; i++) {
-            if (this.player.projeteis[i].y < 0 || this.player.projeteis[i].morto) {
-                this.player.projeteis.splice(i, 1);
-                console.log("Projetil fora da tela deletado");
-            }
-        }
+        this.player.projeteis = this.player.projeteis.filter(p => p.y > 0 || !p.morto);
 
         for (let i = 0; i < this.inimigosArr.length; i++) {
-            for (let j = 0; j < this.inimigosArr[i].projeteis.length; j++) {
-                if (this.inimigosArr[i].projeteis[j].y > this.tela.height || this.inimigosArr[i].projeteis[j].morto) {
-                    this.inimigosArr[i].projeteis.splice(j, 1);
-                    console.log("Projetil fora da tela deletado");
-                }
-            }
+            this.inimigosArr[i].projeteis = this.inimigosArr[i].projeteis.filter(p => p.y < this.tela.height || !p.morto);
         }
     }
 
@@ -284,7 +268,7 @@ export class Jogo {
         console.log("Iniciando jogo...");
 
         this.DefineTamanhoTelaJogo();
-        this.CriaInimigos(5, 25, 50, 50);
+        this.CriaInimigos(5, 5, 50, 50);
 
         if (this.inimigosArr.length > 0) {
             let iniciaTiroteio = setInterval(() => {
