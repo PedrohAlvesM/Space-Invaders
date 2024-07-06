@@ -268,7 +268,7 @@ export class Jogo {
         console.log("Iniciando jogo...");
 
         this.DefineTamanhoTelaJogo();
-        this.CriaInimigos(5, 5, 50, 50);
+        this.CriaInimigos(5, 25, 50, 50);
 
         if (this.inimigosArr.length > 0) {
             let iniciaTiroteio = setInterval(() => {
