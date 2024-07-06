@@ -103,12 +103,14 @@ export class Jogo {
             }
 
             this.inimigosArr[i].Movimento(this.tela.width);
+            this.inimigosArr[i].projeteis.forEach(p => p.Viajando());
         }
 
         this.hudPontuacao.texto = String(this.player.pontos);
         this.hudLevel.texto = `level ${this.level}`;
 
-        this.DesenhaNaTela();
+        this.DesenhaNaTela();      
+        this.player.projeteis.forEach(p => p.Viajando());
         this.DeletaProjetilForaDaTela();
         this.DetectaColisao();
 

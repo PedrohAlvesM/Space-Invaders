@@ -1,22 +1,13 @@
 import { Entidade } from "./entidade-class.js";
 export class Projetil extends Entidade{
     
-    constructor (x, y, largura, altura, contexto, vida, atirou, idSprite, velocidade){
+    constructor (x, y, largura, altura, contexto, vida, atirou, idSprite, velocidade, aleatorio){
         super(x, y,largura,altura,contexto,vida,idSprite, velocidade);
         this.atirou = atirou;
-
+        this.aleatorio = aleatorio;
     }
 
-    IniciaTrajetoria(aleatorio=false) {
-        if (aleatorio) {
-            let animacao = setInterval(()=>{this.Viajando(animacao, aleatorio)}, 500);
-        }
-        else {
-            let animacao = setInterval(()=>{this.Viajando(animacao)}, 500);
-        }
-    }
-
-    Viajando(animacao, aleatorio=false){
+    Viajando(animacao){
         this.contexto.clearRect(this.x, this.y, this.largura, this.altura);
         
         if (this.y <= 0 || this.y > this.contexto.canvas.height || this.morto) {    
@@ -25,9 +16,9 @@ export class Projetil extends Entidade{
         }
         
         this.atirou === "player" ?  this.y -= this.velocidade : this.y += this.velocidade;
-        if (aleatorio) {
+        if (this.aleatorio) {
             let movimentoAleatorio = Math.random();
-            movimentoAleatorio > 0.5 ? this.x+= 15 : this.x-= 15;
+            movimentoAleatorio > 0.5 ? this.x+= 5 : this.x-= 5;
         }
 
         this.DesenhaNaTela();

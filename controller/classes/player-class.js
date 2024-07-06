@@ -44,9 +44,8 @@ export class Player extends Entidade{
            //Atirar com barra de espaço
             " ": ()=>{
                 if (this.#podeAtirar) {
-                    const p = new Projetil(this.x+this.largura/2-11, this.y-20, 16, 16, this.contexto, 1, "player", "laser-player", 48);
+                    const p = new Projetil(this.x+this.largura/2-11, this.y-20, 16, 16, this.contexto, 1, "player", "laser-player", 5, false);
                     this.projeteis.push(p);
-                    p.IniciaTrajetoria();
         
                     this.#podeAtirar = false;
 

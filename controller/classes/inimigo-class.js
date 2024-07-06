@@ -9,25 +9,28 @@ export class Inimigo extends Entidade {
 
     Atirar() {
         if (this.sprite === "nave-inimigo-forte") {
-            let num = Math.floor(Math.random()*5);
+            let num = Math.floor(Math.random()*3);
             
             for (let i = 0; i < num;  i++) {
-                let velocidadeAlatoria = Math.floor(Math.random() * 10);
-                let p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, 1, "inimigo", "laser-inimigo", 48+velocidadeAlatoria);
+                let velocidadeAlatoria = Math.floor(Math.random() * 3);
+
+                let p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, 1, "inimigo", "laser-inimigo", 5+velocidadeAlatoria, true);
                 this.projeteis.push(p);
-                p.IniciaTrajetoria(true);
             }
-            return
+        }
+        else if (this.sprite === "nave-inimigo-aleatorio") {
+            let num = Math.floor(Math.random()*3);
+            
+            for (let i = 0; i < num;  i++) {
+                let p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, 1, "inimigo", "laser-inimigo", 5, true);
+                this.projeteis.push(p);
+            }
+        }
+        else {
+            const p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, 1, "inimigo", "laser-inimigo", 5, false);
+            this.projeteis.push(p);
         }
         
-        const p = new Projetil(this.x+this.largura/2-11, this.y+this.altura+2, 16, 16, this.contexto, 1, "inimigo", "laser-inimigo", 48);
-        this.projeteis.push(p);
-
-        if (this.atiraAleatorio) {
-            p.IniciaTrajetoria(true);
-            return
-        }
-        p.IniciaTrajetoria();
     }
     
     Movimento(larguraTela) {        
