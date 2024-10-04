@@ -4,6 +4,8 @@ import { Entidade } from "./entidade-class.js";
 export class Player extends Entidade{
     #pontos = 0;
     #podeAtirar = true;
+    #tempoInvencibilidade = 1000;
+    #tempoPodeAtirar = 1000;
 
     constructor(x, y, largura, altura, contexto, vida, idSprite, velocidade){
         super(x, y, largura, altura, contexto, vida, idSprite,  velocidade);
@@ -46,15 +48,31 @@ export class Player extends Entidade{
                 if (this.#podeAtirar) {
                     const p = new Projetil(this.x+this.largura/2-11, this.y-20, 16, 16, this.contexto, 1, "player", "laser-player", 5, false);
                     this.projeteis.push(p);
-        
                     this.#podeAtirar = false;
-
-                    setTimeout(()=>{this.#podeAtirar = true}, 1000);
                 }
             }
         }
         if(acoesPossiceis[tecla.key]){
             acoesPossiceis[tecla.key]();
+        }
+    }
+
+    MudarTempoInvencibilidade(framerate) {
+        if (this.tempoInvencibilidade <= 0) {
+            this.invencibilidade = false;
+            this.tempoInvencibilidade = 1000;
+        }
+        else {
+            this.tempoInvencibilidade -= framerate;
+        }
+    }
+    MudarTempoAtirar(framerate) {
+        if (this.#tempoPodeAtirar <= 0) {
+            this.#podeAtirar = true;
+            this.#tempoPodeAtirar = 1000;
+        }
+        else {
+            this.#tempoPodeAtirar -= framerate;
         }
     }
 
@@ -74,5 +92,23 @@ export class Player extends Entidade{
         }
 
         this.#podeAtirar = atirar;
+    }
+    get tempoInvencibilidade() {
+        return this.#tempoInvencibilidade;
+    }
+    set tempoInvencibilidade(tempo) {
+        if (typeof tempo !== "number") {
+            throw new Error("TempoInvencibilidade deve ser um número");
+        }
+        this.#tempoInvencibilidade = tempo;
+    }
+    get tempoPodeAtirar() {
+        return this.#tempoPodeAtirar;
+    }
+    set tempoPodeAtirar(tempo) {
+        if (typeof tempo !== "number") {
+            throw new Error("TempoPodeAtirar deve ser um número");
+        }
+        this.#tempoPodeAtirar = tempo;
     }
 }

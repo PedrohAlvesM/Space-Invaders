@@ -7,12 +7,11 @@ export class Projetil extends Entidade{
         this.aleatorio = aleatorio;
     }
 
-    Viajando(animacao){
+    Viajando(){
         this.contexto.clearRect(this.x, this.y, this.largura, this.altura);
         
         if (this.y <= 0 || this.y > this.contexto.canvas.height || this.morto) {    
-            this.atirou === "player" ? this.y = -1 : this.y = this.contexto.canvas.height+1; //colocando o projetil fora da tela para ser apagado no método DeletaProjetilForaDaTela da classe Init
-            clearInterval(animacao);
+            this.atirou === "player" ? this.y = -1 : this.y = this.contexto.canvas.height+1;
         }
         
         this.atirou === "player" ?  this.y -= this.velocidade : this.y += this.velocidade;

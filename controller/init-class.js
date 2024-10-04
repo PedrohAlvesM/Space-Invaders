@@ -10,26 +10,28 @@ export class Jogo {
         this.tela = document.getElementById("canvas");
         this.ctx = this.tela.getContext("2d");
 
+        this.jogador = new Jogador();
         this.inimigosArr = [];
         this.player = new Player(10, 0, 50, 50, this.ctx, 3, "nave", 10);
         this.level = 1;
 
+        this.TAMANHO_FONTE = 24;
         this.hudVidaPlayer = [];
         this.hudPontuacao;
         this.hudLevel;
         this.hudMostrarPontos = [];
 
-
         this.atualizar;
         this.framerate = 1000 / 60; //60fps
         this.ultimoQuadroAtualizado = 0;
+        this.tempoInimigoAtirar = 2000;
+        this.ultimoQuadroInimigoAtirou = 0;
+        this.ultimoQuadroMudandoLevel = 0;
+        this.tempoMudandoLevel = 1500;
 
         this.perdeu = false;
         this.venceu = false;
-
-        this.jogador = new Jogador();
-
-        this.TAMANHO_FONTE = 24;
+        this.mudandoLevel = false;
     }
 
     DefineTamanhoTelaJogo() {
@@ -49,7 +51,7 @@ export class Jogo {
         }
 
         this.hudVidaPlayer.forEach(img => img.DesenhaNaTela());
-        this.hudMostrarPontos.forEach(p => p.DesenhaNaTela());
+        this.hudMostrarPontos.forEach(p => p.DesenhaNaTela(this.framerate));
         this.hudPontuacao.DesenhaPontuacaoNaTela();
         this.hudLevel.DesenhaPontuacaoNaTela();
     }
@@ -61,6 +63,18 @@ export class Jogo {
             requestAnimationFrame(this.AtualizaTela.bind(this));
             return
         }
+        if (quadroAtual - this.ultimoQuadroMudandoLevel >= this.tempoMudandoLevel && this.mudandoLevel) {
+            this.mudandoLevel = false;
+            this.ultimoQuadroMudandoLevel = quadroAtual;
+            this.IniciaJogo();
+        }
+
+        if (quadroAtual - this.ultimoQuadroInimigoAtirou >= this.tempoInimigoAtirar) {
+            this.ultimoQuadroInimigoAtirou = quadroAtual;
+            this.InimigoAtirar();
+        }
+        if (this.player.invencibilidade) this.player.MudarTempoInvencibilidade(this.framerate);
+        if (this.player.podeAtirar === false) this.player.MudarTempoAtirar(this.framerate);
 
         this.ultimoQuadroAtualizado = quadroAtual;
 
@@ -72,6 +86,12 @@ export class Jogo {
             return
         }
         else if (this.inimigosArr.length === 0) {
+            if (this.mudandoLevel) {
+                new TextoUI(this.tela.width / 2, this.tela.height / 2, `level ${this.level}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }, this.tempoMudandoLevel).DesenhaNaTela(this.framerate);
+                requestAnimationFrame(this.AtualizaTela.bind(this));
+                return
+            }
+
             for (let i = 0; i < this.inimigosArr.length; i++) {
                 this.inimigosArr[i].projeteis.forEach(p => p.y = this.tela.height + 1);
             }
@@ -81,13 +101,10 @@ export class Jogo {
             this.player.projeteis = [];
             this.level++;
 
-            new TextoUI(this.tela.width / 2, this.tela.height / 2, `level ${this.level}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }).DesenhaNaTela();
-
-            setTimeout(() => {
-                this.IniciaJogo();
-            }, 1000);
+            this.mudandoLevel = true;
+            this.ultimoQuadroMudandoLevel = performance.now();
+            requestAnimationFrame(this.AtualizaTela.bind(this));
             return
-
         }
 
         for (let i = 0; i < this.inimigosArr.length; i++) {
@@ -97,6 +114,7 @@ export class Jogo {
             }
         }
         this.inimigosArr = this.inimigosArr.filter(inimigo => !inimigo.morto);
+        this.hudMostrarPontos = this.hudMostrarPontos.filter(e => e.tempoTela > 0);
 
         this.hudPontuacao.texto = String(this.player.pontos);
         this.hudLevel.texto = `level ${this.level}`;
@@ -130,12 +148,8 @@ export class Jogo {
                     let pontos = pontuacao[this.inimigosArr[j].sprite];
                     this.player.AumentarPontos(pontos);
 
-                    let t = new TextoUI(this.inimigosArr[j].x, this.inimigosArr[j].y, `+${pontos}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" });
+                    let t = new TextoUI(this.inimigosArr[j].x, this.inimigosArr[j].y, `+${pontos}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }, 300);
                     this.hudMostrarPontos.push(t);
-                    setTimeout(() => {
-                        let i = this.hudMostrarPontos.indexOf(t);
-                        this.hudMostrarPontos.splice(i, 1);
-                    }, 300);
                     this.player.projeteis[i].morto = true;
                     console.log("Inimigo morto");
                     console.log("Colisão entre projetil e inimigo");
@@ -155,8 +169,6 @@ export class Jogo {
                         this.player.invencibilidade = true;
                         this.inimigosArr[i].projeteis[j].morto = true;
                         this.hudVidaPlayer.pop();
-                        setTimeout(() => { this.player.invencibilidade = false; }, 1000);
-
                         break
                     }
                 }
@@ -192,11 +204,8 @@ export class Jogo {
         console.log("Inimigos criados");
     }
 
-    InimigosAtirarem(cotroleIntervalo) {
-        if (this.inimigosArr.length < 1 || this.perdeu || this.venceu) {
-            clearInterval(cotroleIntervalo);
-            return
-        }
+    InimigoAtirar() {
+        if (this.inimigosArr.length === 0) return
 
         let atira = Math.floor(Math.random() * this.inimigosArr.length);
         if (!this.inimigosArr[atira]) {
@@ -221,8 +230,8 @@ export class Jogo {
 
         this.ctx.clearRect(0, 0, this.tela.width, this.tela.height);
 
-        new TextoUI(this.tela.width / 2, this.tela.height / 2, "Game Over", this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }).DesenhaNaTela();
-        new TextoUI(this.tela.width / 2, this.tela.height / 2 + this.TAMANHO_FONTE * 2, `Pontuação: ${this.player.pontos}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }).DesenhaNaTela();
+        new TextoUI(this.tela.width / 2, this.tela.height / 2, "Game Over", this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }, Infinity).DesenhaNaTela(this.framerate);
+        new TextoUI(this.tela.width / 2, this.tela.height / 2 + this.TAMANHO_FONTE * 2, `Pontuação: ${this.player.pontos}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }, Infinity).DesenhaNaTela(this.framerate);
 
 
         let highScore = Number(localStorage.getItem("highScore"));
@@ -238,7 +247,7 @@ export class Jogo {
             if (this.jogador.TOKEN) await this.AtualizaPontuacaoOnline();
         }
 
-        new TextoUI(this.tela.width / 2, this.tela.height / 2 + this.TAMANHO_FONTE * 4, `High Score: ${highScore}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }).DesenhaNaTela();
+        new TextoUI(this.tela.width / 2, this.tela.height / 2 + this.TAMANHO_FONTE * 4, `High Score: ${highScore}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }, Infinity).DesenhaNaTela(this.framerate);
     }
 
     async AtualizaPontuacaoOnline() {
@@ -264,17 +273,11 @@ export class Jogo {
         }
     }
 
-    async IniciaJogo() {
+    IniciaJogo() {
         console.log("Iniciando jogo...");
 
         this.DefineTamanhoTelaJogo();
-        this.CriaInimigos(5, 25, 50, 50);
-
-        if (this.inimigosArr.length > 0) {
-            let iniciaTiroteio = setInterval(() => {
-                this.InimigosAtirarem(iniciaTiroteio);
-            }, 2000);
-        }
+        this.CriaInimigos(5, 5, 50, 50);
 
         if (this.level > 1) {
             this.AtualizaTela();
@@ -289,8 +292,8 @@ export class Jogo {
             let tamanho = 25;
             this.hudVidaPlayer.push(new ImagemUI(tamanho * i, 0, tamanho, tamanho, "nave", this.ctx));
         }
-        this.hudPontuacao = new TextoUI(this.tela.width / 2, 24, "0000", this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" });
-        this.hudLevel = new TextoUI(this.tela.width - 85, 18, `level ${this.level}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: 18, cor: "#fff", modificadorFonte: "bold" })
+        this.hudPontuacao = new TextoUI(this.tela.width / 2, 24, "0000", this.ctx, { fonte: "'Press Start 2P'", tamanho: this.TAMANHO_FONTE, cor: "#fff", modificadorFonte: "bold" }, Infinity);
+        this.hudLevel = new TextoUI(this.tela.width - 85, 18, `level ${this.level}`, this.ctx, { fonte: "'Press Start 2P'", tamanho: 18, cor: "#fff", modificadorFonte: "bold" }, Infinity)
 
         this.DetectaTeclaPressionada();
         this.AtualizaTela(document.timeline.currentTime);

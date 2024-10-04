@@ -4,12 +4,14 @@ export class TextoUI {
     #texto;
     #fonte = {};
     #contexto;
-    constructor (x,y, texto, contexto, fonte) {
+    #tempoTela;
+    constructor (x,y, texto, contexto, fonte, tempoTela) {
         this.#x = x;
         this.#y = y;
         this.#texto = texto;
         this.#contexto = contexto;
         this.#fonte = fonte;
+        this.#tempoTela = tempoTela;
     }
 
     get x () {
@@ -57,8 +59,6 @@ export class TextoUI {
         this.#fonte.modificador = modificadorFonte;       
     }
 
-    
-    
     get contexto () {
         return this.#contexto;
     }
@@ -67,6 +67,16 @@ export class TextoUI {
             throw new Error("Ctx deve ser o contexto de um elemento HTML Canvas e o Browser deve suportar essa funcionalidade.");
         }
         this.#contexto = ctx;
+    }
+
+    get tempoTela() {
+        return this.#tempoTela;
+    }
+    set tempoTela(tempo) {
+        if (typeof tempo !== "number") {
+            throw new Error("TempoTela deve ser um número");
+        }
+        this.#tempoTela = tempo;
     }
     
     DefinePontuacao () {
@@ -91,7 +101,7 @@ export class TextoUI {
         this.#contexto.closePath();
     }
     
-    DesenhaNaTela() {
+    DesenhaNaTela(framerate) {
         this.#contexto.beginPath();
         this.#contexto.textAlign = "center";
         this.#contexto.font = `${this.#fonte.modificadorFonte} ${this.#fonte.tamanho}px ${this.#fonte.fonte}`;
@@ -99,5 +109,7 @@ export class TextoUI {
     
         this.#contexto.fillText(this.#texto, this.#x, this.#y);
         this.#contexto.closePath();
+        
+        this.#tempoTela -= framerate;
     }
 }
